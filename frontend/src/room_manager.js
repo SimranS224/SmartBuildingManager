@@ -62,14 +62,7 @@ class TransformerComponent extends React.Component {
 }
 
 
-
-
-
-
-
-
-
-class App extends Component {
+class RoomManager extends Component {
   constructor(props){
     super(props);
     
@@ -153,6 +146,9 @@ class App extends Component {
     // find clicked rect by its name
     const name = e.target.name();
     const rect = this.state.roomDimensions.find(r => r.name === name);
+    console.log(rect);
+    console.log(name);
+    console.log(this.state);
     if (rect) {
       this.setState({
         selectedShapeName: name
@@ -246,4 +242,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default RoomManager;
