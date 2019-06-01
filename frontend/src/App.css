@@ -23,6 +23,13 @@
   color: #61dafb;
 }
 
+.rectangle-stage {
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+
+}
+
 
 .letter-holder { display:inline-block; position:relative; font-size:100px; }
 .letter { display: block; font-family:Helvetica, sans-serif; opacity:0.25; }

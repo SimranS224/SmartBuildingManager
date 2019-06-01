@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
 import './App.css';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import ResizableRect from 'react-resizable-rotatable-draggable'
 // import Particles from "./particles";
 import Typist from 'react-typist';
@@ -64,9 +66,51 @@ class TransformerComponent extends React.Component {
 
 
 
+class ExampleModal extends React.Component {
+  constructor(props, context) {
+    super(props, context);
 
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
 
+    this.state = {
+      show: false,
+    };
+  }
 
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
+
+  render() {
+    return (
+      <>
+        <Button variant="primary" onClick={this.handleShow}>
+          Create a Room
+        </Button>
+
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+}
 
 
 class App extends Component {
@@ -210,7 +254,11 @@ class App extends Component {
     // });
   }
 
-
+  manageBox = () => {
+    this.setState({
+      showModal: true,
+    })
+  }
 
   render(){
 
@@ -224,10 +272,10 @@ class App extends Component {
           </Typist> 
           <p>Room - {this.state.selectedShapeName}</p>
           {/* <canvas ref="canvas" width={640} height={425} style={{border: "1px solid #d3d3d3"}}></canvas> */}
-          <div style={{overflow: 'auto'}}>
+          <div className="rectangle-stage">
             <Stage
-              width={window.innerWidth}
-              height={window.innerHeight}
+              width={window.innerWidth * 0.7}
+              height={window.innerHeight * 0.6}
               onMouseDown={this.handleStageMouseDown}
             >
               <Layer>
@@ -240,6 +288,8 @@ class App extends Component {
               </Layer>
             </Stage>
           </div>
+          {/* <Button onClick={this.manageBox}>Create Room </Button> */}
+          <ExampleModal />
         </header>
       </div>
     );
