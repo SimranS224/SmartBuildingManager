@@ -71,7 +71,27 @@ class TransformerComponent extends React.Component {
 class App extends Component {
   constructor(props){
     super(props);
-    
+    this.state = {
+      rectangles: [
+        {
+          x: 10,
+          y: 10,
+          width: 100,
+          height: 100,
+          fill: 'red',
+          name: 'rect1'
+        },
+        {
+          x: 150,
+          y: 150,
+          width: 100,
+          height: 100,
+          fill: 'green',
+          name: 'rect2'
+        }
+      ],
+      selectedShapeName: ''
+    };
     // this.state = {
     //   ...props,
     //   roomDimensions: [
@@ -99,27 +119,7 @@ class App extends Component {
     //   ]
     // }
   }
-  state = {
-    rectangles: [
-      {
-        x: 10,
-        y: 10,
-        width: 100,
-        height: 100,
-        fill: 'red',
-        name: 'rect1'
-      },
-      {
-        x: 150,
-        y: 150,
-        width: 100,
-        height: 100,
-        fill: 'green',
-        name: 'rect2'
-      }
-    ],
-    selectedShapeName: ''
-  };
+  
   handleStageMouseDown = e => {
     // clicked on stage - cler selection
     if (e.target === e.target.getStage()) {
