@@ -1,15 +1,9 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
 import './App.css';
+import ResizableRect from 'react-resizable-rotatable-draggable'
 // import Particles from "./particles";
 import Typist from 'react-typist';
-<<<<<<< HEAD
-import { Stage, Layer} from 'react-konva';
-import Rectangle from './components/Recangle';
-import TransformerComponent from './components/TransformerComponent';
-import Fullpage, { FullPageSections, FullpageSection } from '@ap.cx/react-fullpage'
-import { Button} from 'react-bootstrap';
-=======
 import { Stage, Layer, Rect, Transformer } from 'react-konva';
 
 
@@ -68,23 +62,9 @@ class TransformerComponent extends React.Component {
 }
 
 
-
-
-
-
-
-
->>>>>>> dcbb23842bd3a8eca7c659e0b5cbed63adcabc50
-
-class App extends Component {
+class RoomManager extends Component {
   constructor(props){
     super(props);
-<<<<<<< HEAD
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.state = {
-      show: false,
-=======
     
     this.state = {
       ...props,
@@ -120,7 +100,6 @@ class App extends Component {
           name: "hallway1"
         },
       ],
->>>>>>> dcbb23842bd3a8eca7c659e0b5cbed63adcabc50
       rectangles: [
         {
           x: 10,
@@ -167,6 +146,9 @@ class App extends Component {
     // find clicked rect by its name
     const name = e.target.name();
     const rect = this.state.roomDimensions.find(r => r.name === name);
+    console.log(rect);
+    console.log(name);
+    console.log(this.state);
     if (rect) {
       this.setState({
         selectedShapeName: name
@@ -224,95 +206,13 @@ class App extends Component {
     // });
   }
 
-  handleClose() {
-    this.setState({ show: false });
-  }
 
-  handleShow() {
-    this.setState({ show: true });
-  }
 
   render(){
 
     return (
       <div className="App">
         <header className="App-header">
-<<<<<<< HEAD
-        <Fullpage>
-
-          <FullPageSections>
-
-            <FullpageSection style={{
-                backgroundColor: 'black',
-                height: '40vh',
-                padding: '1em',
-              }}>1
-              <Typist>
-              <Typist.Delay ms={1000} />
-                  <hr></hr>
-                  <h1 className="desc" fontSize="1000">Pi-sensor</h1>
-              </Typist>
-            
-            </FullpageSection>
-            <FullpageSection style={{
-                backgroundColor: 'white',
-                height: '100vh',
-                padding: '1em',
-              }}>2
-
-            <Stage
-              width={window.innerWidth}
-              height={window.innerHeight}
-              onMouseDown={this.handleStageMouseDown}
-            >
-            <Layer>
-              {this.state.rectangles.map((rect, i) => (
-                <Rectangle key={i} {...rect} />
-              ))}
-              <TransformerComponent
-                selectedShapeName={this.state.selectedShapeName}
-              />
-            </Layer>
-            </Stage>
-            </FullpageSection>
-            <FullpageSection style={{
-                height: '50vh',
-                backgroundColor: 'white',
-                padding: '1em',
-              }}>3
-              <>
-                <Button variant="primary" onClick={this.handleShow}>
-                  Launch demo modal
-                </Button>
-
-                <Modal show={this.state.show} onHide={this.handleClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
-                      Close
-                    </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
-                      Save Changes
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-              </>
-
-            </FullpageSection>
-
-          </FullPageSections>
-
-        </Fullpage>
-        
-         
-          {/* <canvas ref="canvas" width={640} height={425} style={{border: "1px solid #d3d3d3"}}></canvas> */}
-          <div>
-          
-         
-=======
           <Typist>
           <Typist.Delay ms={1000} />
               <hr></hr>
@@ -335,7 +235,6 @@ class App extends Component {
                 />
               </Layer>
             </Stage>
->>>>>>> dcbb23842bd3a8eca7c659e0b5cbed63adcabc50
           </div>
         </header>
       </div>
@@ -343,4 +242,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default RoomManager;
