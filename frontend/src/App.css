@@ -52,7 +52,7 @@
 .y-right-stroke { left: 29%; top: 0; width: 82.1%; }
 .y-bottom-stroke { left: 29%; top: 41%; width: 39.9%; }
 
-
+.modal{ display:block; }
 
 @keyframes App-logo-spin {
   from {

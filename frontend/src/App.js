@@ -6,6 +6,10 @@ import Modal from 'react-bootstrap/Modal';
 import ResizableRect from 'react-resizable-rotatable-draggable'
 // import Particles from "./particles";
 import Typist from 'react-typist';
+import Rectangle from './components/Recangle';
+import TransformerComponent from './components/TransformerComponent';
+import Fullpage, { FullPageSections, FullpageSection } from '@ap.cx/react-fullpage'
+import { Button} from 'react-bootstrap';
 import { Stage, Layer, Rect, Transformer } from 'react-konva';
 
 
@@ -116,6 +120,8 @@ class ExampleModal extends React.Component {
 class App extends Component {
   constructor(props){
     super(props);
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     
     this.state = {
       ...props,
@@ -259,12 +265,90 @@ class App extends Component {
       showModal: true,
     })
   }
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
 
   render(){
-
     return (
       <div className="App">
         <header className="App-header">
+        <Fullpage>
+
+          <FullPageSections>
+
+            <FullpageSection style={{
+                backgroundColor: 'black',
+                height: '40vh',
+                padding: '1em',
+              }}>1
+              <Typist>
+              <Typist.Delay ms={1000} />
+                  <hr></hr>
+                  <h1 className="desc" fontSize="1000">Pi-sensor</h1>
+              </Typist>
+            
+            </FullpageSection>
+            <FullpageSection style={{
+                backgroundColor: 'white',
+                height: '100vh',
+                padding: '1em',
+              }}>2
+
+            <Stage
+              width={window.innerWidth}
+              height={window.innerHeight}
+              onMouseDown={this.handleStageMouseDown}
+            >
+            <Layer>
+              {this.state.rectangles.map((rect, i) => (
+                <Rectangle key={i} {...rect} />
+              ))}
+              <TransformerComponent
+                selectedShapeName={this.state.selectedShapeName}
+              />
+            </Layer>
+            </Stage>
+            </FullpageSection>
+            <FullpageSection style={{
+                height: '50vh',
+                backgroundColor: 'white',
+                padding: '1em',
+              }}>3
+              <>
+                <Button variant="primary" onClick={this.handleShow}>
+                  Launch demo modal
+                </Button>
+
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose}>
+                      Close
+                    </Button>
+                    <Button variant="primary" onClick={this.handleClose}>
+                      Save Changes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </>
+
+            </FullpageSection>
+
+          </FullPageSections>
+
+        </Fullpage>
+        
+         
+          {/* <canvas ref="canvas" width={640} height={425} style={{border: "1px solid #d3d3d3"}}></canvas> */}
+         
           <Typist>
           <Typist.Delay ms={1000} />
               <hr></hr>
@@ -272,26 +356,26 @@ class App extends Component {
           </Typist> 
           <p>Room - {this.state.selectedShapeName}</p>
           {/* <canvas ref="canvas" width={640} height={425} style={{border: "1px solid #d3d3d3"}}></canvas> */}
-          <div className="rectangle-stage">
-            <Stage
-              width={window.innerWidth * 0.7}
-              height={window.innerHeight * 0.6}
-              onMouseDown={this.handleStageMouseDown}
-            >
-              <Layer>
-                {this.state.roomDimensions.map((rect, i) => (
-                  <Rectangle key={i} {...{...rect, fill: this.temperatureToGradient(rect.temperature)}} />
-                ))}
-                <TransformerComponent
-                  selectedShapeName={this.state.selectedShapeName}
-                />
-              </Layer>
-            </Stage>
-          </div>
+            <div className="rectangle-stage">
+              <Stage
+                width={window.innerWidth * 0.7}
+                height={window.innerHeight * 0.6}
+                onMouseDown={this.handleStageMouseDown}
+              >
+                <Layer>
+                  {this.state.roomDimensions.map((rect, i) => (
+                    <Rectangle key={i} {...{...rect, fill: this.temperatureToGradient(rect.temperature)}} />
+                  ))}
+                  <TransformerComponent
+                    selectedShapeName={this.state.selectedShapeName}
+                  />
+                </Layer>
+              </Stage>
+            </div>
           {/* <Button onClick={this.manageBox}>Create Room </Button> */}
           <ExampleModal />
-        </header>
-      </div>
+          </header>
+        </div>
     );
   }
 }

@@ -3,12 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ap.cx/react-fullpage": "^0.1.10-alpha",
     "animejs": "^3.0.1",
     "konva": "^3.3.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
+<<<<<<< HEAD
+    "react-bootstrap-modal": "^4.2.0",
+=======
+>>>>>>> dcbb23842bd3a8eca7c659e0b5cbed63adcabc50
     "react-dom": "^16.8.6",
     "react-konva": "^16.8.7-2",
+    "react-modal": "^3.8.1",
     "react-particles-js": "^2.6.0",
     "react-resizable-rotatable-draggable": "^0.2.0",
     "react-scripts": "3.0.1",

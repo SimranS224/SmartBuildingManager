@@ -1,7 +1,6 @@
 import React from 'react';
 import {Transformer } from 'react-konva';
 
-
 export default class TransformerComponent extends React.Component {
   componentDidMount() {
     this.checkNode();
