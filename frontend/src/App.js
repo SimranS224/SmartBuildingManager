@@ -9,63 +9,62 @@ import Typist from 'react-typist';
 import Rectangle from './components/Recangle';
 import TransformerComponent from './components/TransformerComponent';
 import Fullpage, { FullPageSections, FullpageSection } from '@ap.cx/react-fullpage'
-import { Button} from 'react-bootstrap';
 import { Stage, Layer, Rect, Transformer } from 'react-konva';
 
 
-class Rectangle extends React.Component {
-  render() {
-    return (
-      <Rect
-        x={this.props.x}
-        y={this.props.y}
-        width={this.props.width}
-        height={this.props.height}
-        fill={this.props.fill}
-        name={this.props.name}
-        draggable
-      />
-    );
-  }
-}
+// class Rectangle extends React.Component {
+//   render() {
+//     return (
+//       <Rect
+//         x={this.props.x}
+//         y={this.props.y}
+//         width={this.props.width}
+//         height={this.props.height}
+//         fill={this.props.fill}
+//         name={this.props.name}
+//         draggable
+//       />
+//     );
+//   }
+// }
 
-class TransformerComponent extends React.Component {
-  componentDidMount() {
-    this.checkNode();
-  }
-  componentDidUpdate() {
-    this.checkNode();
-  }
-  checkNode() {
-    // here we need to manually attach or detach Transformer node
-    const stage = this.transformer.getStage();
-    const { selectedShapeName } = this.props;
+// class TransformerComponent extends React.Component {
+//   componentDidMount() {
+//     this.checkNode();
+//   }
+//   componentDidUpdate() {
+//     this.checkNode();
+//   }
+//   checkNode() {
+//     // here we need to manually attach or detach Transformer node
+//     const stage = this.transformer.getStage();
+//     const { selectedShapeName } = this.props;
 
-    const selectedNode = stage.findOne('.' + selectedShapeName);
-    // do nothing if selected node is already attached
-    if (selectedNode === this.transformer.node()) {
-      return;
-    }
+//     const selectedNode = stage.findOne('.' + selectedShapeName);
+//     // do nothing if selected node is already attached
+//     if (selectedNode === this.transformer.node()) {
+//       return;
+//     }
 
-    if (selectedNode) {
-      // attach to another node
-      this.transformer.attachTo(selectedNode);
-    } else {
-      // remove transformer
-      this.transformer.detach();
-    }
-    this.transformer.getLayer().batchDraw();
-  }
-  render() {
-    return (
-      <Transformer
-        ref={node => {
-          this.transformer = node;
-        }}
-      />
-    );
-  }
-}
+//     if (selectedNode) {
+//       // attach to another node
+//       this.transformer.attachTo(selectedNode);
+//     } else {
+//       // remove transformer
+//       this.transformer.detach();
+//     }
+//     this.transformer.getLayer().batchDraw();
+//   }
+//   render() {
+//     return (
+//       <Transformer
+//         ref={node => {
+//           this.transformer = node;
+//         }}
+//       />
+//     );
+//   }
+// }
 
 
 
@@ -181,7 +180,7 @@ class App extends Component {
     console.log(window.innerWidth);
 
     this.state.roomDimensions.map((room, i) => {
-      this.state.roomDimensions[i] = {...room, fill: this.temperatureToGradient(room.temperature)[0]}
+      this.state.roomDimensions[i] = {...room, fill: this.temperatureToGradient(room.temperature)}
     })
   }
 
@@ -298,14 +297,14 @@ class App extends Component {
                 height: '100vh',
                 padding: '1em',
               }}>2
-
+            <p style={{color: 'black'}}>Room - {this.state.selectedShapeName}</p>
             <Stage
-              width={window.innerWidth}
-              height={window.innerHeight}
+              width={window.innerWidth * 0.7}
+              height={window.innerHeight * 0.4}
               onMouseDown={this.handleStageMouseDown}
             >
             <Layer>
-              {this.state.rectangles.map((rect, i) => (
+              {this.state.roomDimensions.map((rect, i) => (
                 <Rectangle key={i} {...rect} />
               ))}
               <TransformerComponent
@@ -313,6 +312,7 @@ class App extends Component {
               />
             </Layer>
             </Stage>
+            <ExampleModal />
             </FullpageSection>
             <FullpageSection style={{
                 height: '50vh',
@@ -320,24 +320,7 @@ class App extends Component {
                 padding: '1em',
               }}>3
               <>
-                <Button variant="primary" onClick={this.handleShow}>
-                  Launch demo modal
-                </Button>
 
-                <Modal show={this.state.show} onHide={this.handleClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
-                      Close
-                    </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
-                      Save Changes
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
               </>
 
             </FullpageSection>
@@ -349,14 +332,14 @@ class App extends Component {
          
           {/* <canvas ref="canvas" width={640} height={425} style={{border: "1px solid #d3d3d3"}}></canvas> */}
          
-          <Typist>
+          {/* <Typist>
           <Typist.Delay ms={1000} />
               <hr></hr>
               <h1 className="desc" fontSize="1000">Pi-sensor</h1>
           </Typist> 
           <p>Room - {this.state.selectedShapeName}</p>
           {/* <canvas ref="canvas" width={640} height={425} style={{border: "1px solid #d3d3d3"}}></canvas> */}
-            <div className="rectangle-stage">
+            {/* <div className="rectangle-stage">
               <Stage
                 width={window.innerWidth * 0.7}
                 height={window.innerHeight * 0.6}
@@ -370,10 +353,9 @@ class App extends Component {
                     selectedShapeName={this.state.selectedShapeName}
                   />
                 </Layer>
-              </Stage>
-            </div>
+              </Stage> */}
+            {/* </div>  */}
           {/* <Button onClick={this.manageBox}>Create Room </Button> */}
-          <ExampleModal />
           </header>
         </div>
     );
