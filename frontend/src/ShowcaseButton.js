@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 function ShowcaseButton(props) {
   const {buttonContent, onClick} = props;
@@ -10,8 +10,8 @@ function ShowcaseButton(props) {
   );
 }
 
-// ShowcaseButton.PropTypes = {
-//   buttonContent: PropTypes.string.isRequired,
+// ShowcaseButton.propTypes = {
+//   buttonContent: propTypes.string.isRequired,
 //   onClick: PropTypes.func.isRequired
 // };
 
