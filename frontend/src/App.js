@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import ResizableRect from 'react-resizable-rotatable-draggable'
+// import Particles from "./particles";
+import Typist from 'react-typist';
 
 
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      width: 100,
-      height: 100,
-      top: 100,
-      left: 100,
-      rotateAngle: 0
-    }
+    
     // this.state = {
     //   ...props,
     //   roomDimensions: [
@@ -86,65 +82,22 @@ class App extends Component {
     // });
   }
 
-  handleResize = (style, isShiftKey, type) => {
-    // type is a string and it shows which resize-handler you clicked
-    // e.g. if you clicked top-right handler, then type is 'tr'
-    let { top, left, width, height } = style
-    top = Math.round(top)
-    left = Math.round(left)
-    width = Math.round(width)
-    height = Math.round(height)
-    this.setState({
-      top,
-      left,
-      width,
-      height
-    })
-  }
 
-  handleRotate = (rotateAngle) => {
-    this.setState({
-      rotateAngle
-    })
-  }
-
-  handleDrag = (deltaX, deltaY) => {
-    this.setState({
-      left: this.state.left + deltaX,
-      top: this.state.top + deltaY
-    })
-  }
 
   render(){
-    const {width, top, left, height, rotateAngle} = this.state
 
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Pi-Sensor</h1>
+        
+        <Typist>
+        <Typist.Delay ms={1000} />
+            <hr></hr>
+            <h1 className="desc" fontSize="1000">Pi-sensor</h1>
+        </Typist> 
           {/* <canvas ref="canvas" width={640} height={425} style={{border: "1px solid #d3d3d3"}}></canvas> */}
           <div>
-          <ResizableRect
-          left={left}
-          top={top}
-          width={width}
-          height={height}
-          rotateAngle={rotateAngle}
-          // aspectRatio={false}
-          // minWidth={10}
-          // minHeight={10}
-          zoomable='n, w, s, e, nw, ne, se, sw'
-          // rotatable={true}
-          // onRotateStart={this.handleRotateStart}
-          onRotate={this.handleRotate}
-          // onRotateEnd={this.handleRotateEnd}
-          // onResizeStart={this.handleResizeStart}
-          onResize={this.handleResize}
-          // onResizeEnd={this.handleUp}
-          // onDragStart={this.handleDragStart}
-          onDrag={this.handleDrag}
-          // onDragEnd={this.handleDragEnd}
-        />
+          
           {/* <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.js</code> and save to reload.
