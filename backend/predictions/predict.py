@@ -29,7 +29,7 @@ def transformInput(dataFrame):
 def inverseTransformInput(dataFrame):
   inputSeries = dataFrame.iloc[0]
   print(inputSeries)
-  date=inputSeries[0]
+  date=inputSeries[0].strftime(datetimeFormat)
   values = []
   for i in range(1, inputSeries.size, 2):
     values.append([date,i//2,round(inputSeries[i+1]),round(inputSeries[i])])
