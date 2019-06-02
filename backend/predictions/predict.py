@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import MySQLdb
-import sqlalchemy
 
 numberOf10Seconds = 720
 
@@ -78,8 +77,9 @@ for i in range(1, numberOf10Seconds):
 
 date = x_val['date'].min
 print(date)
+print('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
 connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
-
+print("finished")
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 x_val = x_val.apply(inverseTransformInput,axis=1)
 print(x_val)
