@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import MySQLdb
 import sqlalchemy
-import datetime
 
 numberOf10Seconds = 720
 
@@ -71,10 +70,12 @@ for i in range(1, numberOf10Seconds):
   x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True)
 
 date = x_val['date'].min
+print(date)
 cursor.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
 
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 x_val = x_val.apply(inverseTransformInput,axis=1)
+print(x_val)
 
 db.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
