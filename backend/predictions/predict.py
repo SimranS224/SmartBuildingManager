@@ -26,7 +26,8 @@ def transformInput(dataFrame):
     values += [row["numberOfPeople"],row["timeDiff"]]
   return pd.DataFrame([values],columns=columns)
 
-def inverseTransformInput(inputSeries):
+def inverseTransformInput(dataFrame):
+  inputSeries dataFrame.iloc[0]
   date=inputSeries[0]
   values = []
   for i in range(1, inputSeries.size, 2):
