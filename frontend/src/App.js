@@ -12,7 +12,8 @@ import TransformerComponent from './components/TransformerComponent';
 import Fullpage, { FullPageSections, FullpageSection } from '@ap.cx/react-fullpage'
 import { Stage, Layer, Rect, Transformer } from 'react-konva';
 import { ListGroup, ListGroupItem } from 'reactstrap';
-
+import Buttonmui from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles'
 
 // class Rectangle extends React.Component {
 //   render() {
@@ -138,6 +139,35 @@ class ExampleModal extends React.Component {
   }
 }
 
+// const StyledButton = withStyles({
+//   root: {
+//     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+//     borderRadius: 3,
+//     border: 0,
+//     color: 'white',
+//     height: 48,
+//     padding: '0 30px',
+//     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+//   },
+//   label: {
+//     textTransform: 'capitalize',
+//   },
+// })(Buttonmui);
+const styles = {
+  button: {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  },
+  buttonBlue: {
+    background: 'linear-gradient(45deg, #2196f3 30%, #21cbf3 90%)',
+    boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .30)',
+  },
+};
 
 class App extends Component {
   constructor(props){
@@ -148,6 +178,7 @@ class App extends Component {
 
     this.state = {
       ...props,
+      color: 'default',
       roomDimensions: [
         // Room 1
         {
@@ -330,6 +361,7 @@ class App extends Component {
     //   ctx.fillRect(room.position[0], room.position[1], room.width, room.height);
     // });
   }
+  
 
   manageBox = () => {
     this.setState({
@@ -362,6 +394,8 @@ class App extends Component {
     // console.log(all_temps);
     return arr;
   }
+
+  
 
   render(){
     const {all_temps} = this.state;  // Essentially does: const vals = this.state.vals;
@@ -412,14 +446,22 @@ class App extends Component {
                 selectedShapeName={this.state.selectedShapeName}
               />
             </Layer>
-            
+            {/* {`${item}`} */}
             </Stage>
                
                 {/* <p style={{color: 'black'}}>Hello world</p> */}
                 <div style={{height: "40vh", width: "40vw"}}>
+                    <h6 style={{width:"15vw"}}> Temperature scale</h6>
                     <ul>
                       {this.createListofColors().map(item => (
-                        <ul style={{color: item[1], fontSize: "18px"}} key={item}>{item}</ul>
+                      //   <Button backgroundColor={`#${item}`}
+                      //   >
+                      //   {'dynamic inline-style'}
+                      // </Button>
+                        // <StyledButton style={{color:item}}> </StyledButton>
+                        <div style={{backgroundColor: `${item[1]}`, width:"20vw"}}>
+                        <ul style={{color: "black", fontSize: "18px", backgroundColor: `${item[1]}`, width:"0vw"}} key={item}> {item[0]}</ul>
+                        </div>
                       ))}
                     </ul>
                 </div>
