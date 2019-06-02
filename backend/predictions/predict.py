@@ -61,12 +61,12 @@ for i in range(1, numberOf10Seconds):
   mostRecent = x_val.tail(1)
   print(mostRecent)
   for i in range(1,mostRecent.shape[1],2):
-    if predictions[0,i] == 0 and mostRecent.iloc[0,i] == 0:
-      predictions[0,i-1]=mostRecent.iloc[0,i-1]
-    elif predictions[0,i] != 0 and mostRecent.iloc[0,i] != 0:
-      predictions[0,i-1]=mostRecent.iloc[0,i-1]
+    if predictions[0,i-1] == 0 and mostRecent.iloc[0,i] == 0:
+      predictions[0,i-2]=mostRecent.iloc[0,i-1]
+    elif predictions[0,i-1] != 0 and mostRecent.iloc[0,i] != 0:
+      predictions[0,i-2]=mostRecent.iloc[0,i-1]
     else:
-      predictions[0,i-1]=0
+      predictions[0,i-2]=0
   nextTime = mostRecent.iloc[0]['date'] + timedelta(seconds=10)
   print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
   x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True)
