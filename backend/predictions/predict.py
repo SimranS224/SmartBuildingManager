@@ -56,7 +56,7 @@ x_val[x_val.iloc[:,1:].columns] = scaler.transform(x_val.iloc[:,1:])
 #print(x_val)
 # I is number of 10 seconds ahead we are predicting
 for i in range(1, numberOf10Seconds):
-  temp = np.reshape(np.array(x_val.iloc[:,1:].tail(x_val.shape[0])),(1,x_val.shape[0],x_val.shape[1]))
+  temp = np.reshape(np.array(x_val.iloc[:,1:].tail(x_val.shape[0])),(1,x_val.shape[0],x_val.shape[1]-1))
   predictions = model.predict(temp)
   mostRecent = x_val.tail(1)
   print(mostRecent)
