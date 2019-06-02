@@ -31,7 +31,7 @@ def inverseTransformInput(inputSeries):
   values = []
   for i in range(1, inputSeries.size, 2):
     values.append([date,i/2,inputSeries[i],inputSeries[i+1]])
-  return pd.Series(values,index=['date','roomId','secondsSinceLastEmpty','numberOfPeople'])
+  return pd.DataFrame(values,columns=['date','roomId','secondsSinceLastEmpty','numberOfPeople'])
 
 model = load_model('regressor.h5')
 
@@ -82,7 +82,7 @@ connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(dat
 print(x_val)
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 print(x_val)
-x_val = x_val.apply(inverseTransformInput,axis=1)
+x_val = x_val.groupby(date,as_index=False).apply(inverseTransformInput,axis=1)
 print(x_val)
 db.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
