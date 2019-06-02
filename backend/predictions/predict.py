@@ -2,6 +2,7 @@ from keras.models import load_model
 from sklearn.externals import joblib
 from datetime import datetime, timedelta
 import pandas as pd
+import numpy as np
 import MySQLdb
 import sqlalchemy
 import datetime
