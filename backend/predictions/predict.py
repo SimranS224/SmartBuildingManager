@@ -25,7 +25,7 @@ def transformInput(dataFrame):
   for index, row in dataFrame.iterrows():
     columns += ["timeDiff_"+str(row["roomId"]),"numberOfPeople_"+str(row["roomId"])]
     values += [row["numberOfPeople"],row["timeDiff"]]
-  return pd.DataFrame([values],columns=columns).reset_index(drop=True)
+  return pd.DataFrame([values],columns=columns)
 
 def inverseTransformInput(inputSeries):
   date=inputSeries[0]
@@ -49,7 +49,7 @@ x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM
 x_val.columns=["date", "roomId", "timeDiff", "numberOfPeople"]
 x_val.sort_values(["date", "roomId"],inplace=True)
 # print(x_val)
-x_val = x_val.groupby("date").apply(transformInput).reset_index()
+x_val = x_val.groupby("date").apply(transformInput).reset_index(level=0)
 print(x_val)
 scaler = joblib.load(scaler_filename)
 x_val[x_val.columns] = scaler.transform(x_val)
