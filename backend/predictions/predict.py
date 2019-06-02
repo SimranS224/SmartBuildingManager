@@ -53,7 +53,7 @@ x_val = x_val.groupby("date").apply(transformInput)
 print(x_val)
 scaler = joblib.load(scaler_filename)
 x_val[x_val.columns] = scaler.transform(x_val)
-print(x_val)
+#print(x_val)
 # I is number of 10 seconds ahead we are predicting
 for i in range(1, numberOf10Seconds):
   temp = np.reshape(np.array(x_val.tail(x_val.shape[0])),(1,x_val.shape[0],x_val.shape[1]))
