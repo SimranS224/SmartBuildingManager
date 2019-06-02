@@ -75,9 +75,9 @@ for i in range(1, numberOf10Seconds):
   # print([nextTime]+predictions[0].tolist())
   x_val=x_val.append(pd.DataFrame([[nextTime]+predictions[0].tolist()], columns=x_val.columns),ignore_index=True)
 
-date = x_val['date'].min
+date = x_val['date'].min()
 print(date)
-print('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date.strftime(datetimeFormat)))
+print('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
 connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
 print("finished")
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
