@@ -97,20 +97,23 @@ class ExampleModal extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     var form = event.target;
-    console.log(form.elements.room_name.value);
+    if (!this.props.time){
+      if (form.elements.room_name){
+        var newRoomName = form.elements.room_name.value;
+      }
+      var newRoomTemperature = form.elements.room_temperature.value;
 
-    if (form.elements.room_name){
-      var newRoomName = form.elements.room_name.value;
-    }
-    var newRoomTemperature = form.elements.room_temperature.value;
+      // Add room to props
+      if (!form.elements.room_name){
+        this.props.handleFormSubmit(newRoomName, newRoomTemperature);
 
-    // Add room to props
-    if (!form.elements.room_name){
-      this.props.handleFormSubmit(newRoomName, newRoomTemperature);
-
+      } else {
+        this.props.handleFormSubmit(this.props.previousName, newRoomTemperature);
+      }
     } else {
-      this.props.handleFormSubmit(this.props.previousName, newRoomTemperature);
-
+      var timeOffset = form.elements.time_offset.value;
+      console.log(timeOffset);
+      this.props.handleFormSubmit(timeOffset);
     }
 
     this.setState({show: false});
@@ -122,32 +125,47 @@ class ExampleModal extends React.Component {
         <Button variant="primary" onClick={this.handleShow}>
           {this.props.buttonText}
         </Button>
-
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>{this.props.buttonText}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={this.handleSubmit}>
-              <Form.Group>
-                <Form.Label >Room name</Form.Label>
-                <Form.Control name="room_name" type="input"/>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Temperature</Form.Label>
-                <Form.Control name="room_temperature" type="input"/>
-              </Form.Group>
-              <Button variant="secondary" onClick={this.handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" type="submit">
-                Save Changes
-              </Button>
-              </Form>
-          </Modal.Body>
-          <Modal.Footer>
-          </Modal.Footer>
-        </Modal>
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>{this.props.buttonText}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {!this.props.time && 
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Group>
+                  <Form.Label >Room name</Form.Label>
+                  <Form.Control name="room_name" type="input"/>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Temperature</Form.Label>
+                  <Form.Control name="room_temperature" type="input"/>
+                </Form.Group>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" type="submit">
+                  Save Changes
+                </Button>
+                </Form>
+              }
+              {this.props.time &&
+                <Form onSubmit={this.handleSubmit}>
+                  <Form.Group>
+                    <Form.Label>Time offset (in minutes)</Form.Label>
+                    <Form.Control name="time_offset" type="input"/>
+                  </Form.Group>
+                  <Button variant="secondary" onClick={this.handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" type="submit">
+                  Save Changes
+                </Button> 
+                </Form>
+              }
+            </Modal.Body>
+            <Modal.Footer>
+            </Modal.Footer>
+          </Modal>
       </>
     );
   }
@@ -190,6 +208,8 @@ class App extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.editFormSubmit = this.editFormSubmit.bind(this);
+    this.updateColours = this.updateColours.bind(this);
+    this.editTimeSubmit = this.editTimeSubmit.bind(this);
 
     this.state = {
       ...props,
@@ -264,29 +284,30 @@ class App extends Component {
       ],
       selectedShapeName: '',
       temp_colors: {
-        10: ["#00D4FF", "#00D4AA"],
-        11: ["#00E4FF", "#00D4FF"],
-        12: ["#00FFF4", "#00FFF4"],
-        13: ["#00FFD0", "#00FFD0"],
-        14: ["#00FFA8", "#00FFD0"],
-        15: ["#00FFD0", "#00FFA8"],
-        16: ["#00FF5C", "#00FFd0"],
-        17: ["#00FF36", "#00FF5C"],
-        18: ["#00FF24", "#00FF36"],
-        19: ["#00FF10", "#00FF24"],
-        20: ["#17FF00", "#00FF10"],
-        21: ["#3EFF00", "#17FF00"],
-        22: ["#65FF00", "#3EFF00"],
-        23: ["#8AFF00", "#65FF00"],
-        24: ["#B0FF00", "#8AFF00"],
-        25: ["#D7FF00", "#B0FF00"],
-        26: ["#FDFF00", "#D7FF00"],
-        27: ["#FFFA00", "#FDFF00"],
-        28: ["#FFF800", "#FFFA00"],
-        29: ["#FFF000", "#FFF800"],
-        30: ["#FFE600", "#FFF000"],
+        10: ["#1400D6", "#00D4AA"],
+        11: ["#1D00CD", "#00D4FF"],
+        12: ["#2600C4", "#00FFF4"],
+        13: ["#3000BB", "#00FFD0"],
+        14: ["#3900B3", "#00FFD0"],
+        15: ["#4300AA", "#00FFA8"],
+        16: ["#4C00A1", "#00FFd0"],
+        17: ["#550098", "#00FF5C"],
+        18: ["#5F0090", "#00FF36"],
+        19: ["#680087", "#00FF24"],
+        20: ["#72007E", "#00FF10"],
+        21: ["#7B0075", "#17FF00"],
+        22: ["#84006D", "#3EFF00"],
+        23: ["#8E0064", "#65FF00"],
+        24: ["#97005B", "#8AFF00"],
+        25: ["#A10052", "#B0FF00"],
+        26: ["#AA004A", "#D7FF00"],
+        27: ["#B30041", "#FDFF00"],
+        28: ["#BD0038", "#FFFA00"],
+        29: ["#C6002F", "#FFF800"],
+        30: ["#D00127", "#FFF000"],
       },
       update: false,
+      timeOffset: 0
     }
 
     // console.log(this.state.temp_colors);
@@ -422,7 +443,7 @@ class App extends Component {
         if (room.name === this.state.selectedShapeName && roomName){
           this.state.roomDimensions[i] = {...room, fill: this.temperatureToGradient(temperature), temperature: temperature, name: roomName}
         } else if (room.name === this.state.selectedShapeName) {
-          this.state.roomDimensions[i] = {...room, fill:this.temperatureToGradient(temperature), temperature: temperature}
+          this.state.roomDimensions[i] = {...room, fill: this.temperatureToGradient(temperature), temperature: temperature}
         }
       });
     }, 500);
@@ -432,6 +453,68 @@ class App extends Component {
     });
 
   }
+
+  updateColours(responseData){
+    var temperatures = [];
+    console.log(Object.keys(responseData));
+    for (var key in responseData){
+      if (!responseData.hasOwnProperty(key)) continue;
+      
+      var obj = responseData[key];
+      
+      // your code
+      var pos = parseInt(key, 10);
+
+      var newList = [];
+      this.state.roomDimensions.map((room) => {
+        var newTemp = Math.floor(room.temperature + responseData[key].numberOfPeople * 0.5);
+        if (newTemp < 10 || newTemp > 30){
+          newTemp = 15;
+        }
+
+        newList.push({
+          ...room,
+          fill: this.temperatureToGradient(newTemp),
+          temperature: newTemp
+        })
+      });
+
+      console.log(newList);
+
+      this.setState({
+        roomDimensions: newList
+      })
+
+      // if (pos < this.state.roomDimensions.length - 1){
+      //   // console.log(pos);
+      //   console.log(this.state.roomDimensions[pos]);
+      //   if (this.state.roomDimensions[pos]){
+      //     setTimeout(() => {
+      //       this.state.roomDimensions[pos] = {...this.state.roomDimensions[pos], fill: this.temperatureToGradient(Math.floor(this.state.roomDimensions[pos].temperature + responseData[key].numberOfPeople / 2)), temperature: Math.floor(this.state.roomDimensions[pos].temperature + responseData[key].numberOfPeople / 2)}
+      //       console.log(responseData[key]);
+      //       // this.state.roomDimensions[pos] = {...this.state.roomDimensions[pos], fill: this.temperatureToGradient(responseData[key]), temperature: responseData[key]}
+      //     }, 100)
+      // }
+      // for (var prop in obj) {
+      //   // skip loop if the property is from prototype
+      //   if(!obj.hasOwnProperty(prop)) continue;
+
+      //   // your code
+      //   var pos = parseInt(key, 10);
+      //   // console.log(pos);
+      //   // console.log(this.state.roomDimensions[pos]);
+      //   if (this.state.roomDimensions[pos]){
+      //     setTimeout(() => {
+      //       this.state.roomDimensions[pos] = {...this.state.roomDimensions[pos], fill: this.temperatureToGradient(Math.floor(this.state.roomDimensions[pos].temperature + responseData[key].numberOfPeople / 2)), temperature: Math.floor(this.state.roomDimensions[pos].temperature + responseData[key].numberOfPeople / 2)}
+      //       console.log(responseData[key]);
+      //       // this.state.roomDimensions[pos] = {...this.state.roomDimensions[pos], fill: this.temperatureToGradient(responseData[key]), temperature: responseData[key]}
+      //     }, 100)
+      //   }
+      }
+    }
+
+    // this.setState({update: !this.state.update});
+  // }
   
 
   updateTemperature = () => {
@@ -441,34 +524,35 @@ class App extends Component {
     var day = date.getDate();
 
     var hour = date.getHours();
-    var minute = date.getMinutes();
+    var minute = date.getMinutes() + this.state.timeOffset;
     var seconds = date.getSeconds();
 
-    console.log(year);
-    console.log(month);
-    console.log(day);
-    console.log(hour);
-    console.log(minute);
-    console.log(seconds);
+    if (minute > 59 || minute < 0){
+      minute = 30;
+    }
 
+    // console.log(year);
+    // console.log(month);
+    // console.log(day);
+    // console.log(hour);
+    // console.log(minute);
+    // console.log(seconds);
 
-    console.log(date);
-    // axios.get(`https://tsflo-242417.appspot.com/predict/getPopulation/${this.year}-${this.month}-${this.day}%20${this.hour}:${this.minute}:${this.second}`)
-    axios.get("https://tsflo-242417.appspot.com/predict/getPopulation/2019-06-04%2012:31:23", {
-      headers: {
-        withCredentials: true
-      }
-    })
+    axios.get(`https://tsflo-242417.appspot.com/predict/getPopulation/${this.year}-${this.month}-${this.day}%20${this.hour}:${this.minute}:${this.second}`)
       .then(response => {
+        this.updateColours(response.data);
         console.log(response);
       }).catch(error => {
         console.log(error);
       })
-    fetch("https://tsflo-242417.appspot.com/predict/getPopulation/2019-06-04%2012:31:23").then(response => {
-      console.log(response);
-    }).catch(error => {
-      console.log(error);
-    })
+  }
+
+  editTimeSubmit = (newTimeOffset) => {
+    console.log(newTimeOffset);
+
+    this.setState({
+      timeOffset: newTimeOffset
+    });
   }
 
   render(){
@@ -549,6 +633,7 @@ class App extends Component {
             {this.state.selectedShapeName && 
               <ExampleModal handleFormSubmit={this.editFormSubmit} buttonText="Edit Room" previousName={this.state.selectedShapeName}/>
             }
+            <ExampleModal handleFormSubmit={this.editTimeSubmit} buttonText="Change time offset" previousName={this.state.selectedShapeName} time/>
             <Button onClick={this.updateTemperature}>Update Temperature</Button>
 
             </FullpageSection>
@@ -557,7 +642,7 @@ class App extends Component {
                 backgroundColor: '#8bcef8',
                 padding: '1em',
               }}>3
-             {console.log(this.createListofColors())};
+             {/* {console.log(this.createListofColors())}; */}
               
                 
             </FullpageSection>
