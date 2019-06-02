@@ -3,7 +3,22 @@ from sklearn.externals import joblib
 from datetime import datetime, timedelta
 import pandas as pd
 import MySQLdb
+import sqlalchemy
 import datetime
+
+db = sqlalchemy.create_engine(
+    # Equivalent URL:
+    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
+    sqlalchemy.engine.url.URL(
+        drivername='mysql+pymysql',
+        username=DB_USER,
+        password=DB_PASS,
+        database=DB_NAME,
+        query={
+            'unix_socket': '/cloudsql/{}'.format(INSTANCE_NAME)
+        }
+    ),
+)
 
 numberOf10Seconds = 720
 
