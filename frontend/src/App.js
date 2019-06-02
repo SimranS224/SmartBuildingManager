@@ -431,8 +431,9 @@ class App extends Component {
             <p style={{color: 'white'}}>Room - {this.state.selectedShapeName} | Temperature - {this.state.selectedShapeTemperature} | Future Temperature - </p>
             
             <div style={{display: 'flex', flexDirection: "row"}}>
-              <div className="rectangle-stage">
+              <div className="rectangle-stage" backgroundColor="white">
               <Stage
+              style={{backgroundColor:"#8bcef8"}}
               width={window.innerWidth * 0.7}
               height={window.innerHeight * 0.4}
               onMouseDown={this.handleStageMouseDown}
