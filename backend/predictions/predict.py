@@ -53,7 +53,7 @@ x_val = x_val.groupby("date").apply(transformInput)
 
 scaler = joblib.load(scaler_filename)
 x_val[x_val.columns] = scaler.transform(x_val)
-
+print(x_val)
 # I is number of 10 seconds ahead we are predicting
 for i in range(1, numberOf10Seconds):
   temp = np.reshape(np.array(x_val.tail(x_val.shape[0])),(1,x_val.shape[0],x_val.shape[1]))
@@ -67,8 +67,7 @@ for i in range(1, numberOf10Seconds):
       predictions[0,i-1]=mostRecent.iloc[0,i-1]
     else:
       predictions[0,i-1]=0
-  print(mostRecent.iloc[0].name)
-  nextTime = datetime.strptime(mostRecent.iloc[0].name, datetimeFormat) + timedelta(seconds=10)
+  nextTime = mostRecent.iloc[0].name + timedelta(seconds=10)
   print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
   x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True)
 
