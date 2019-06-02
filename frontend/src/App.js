@@ -345,6 +345,16 @@ class App extends Component {
                   <ul style={{color: item[1]}} key={item}>{item}</ul>
                 ))}
               </ul>
+            <div style={{display: 'flex', flexDirection: "row"}}>
+              <div className="rectangle-stage">
+               
+                {/* <p style={{color: 'black'}}>Hello world</p> */}
+                <div style={{height: "40vh", width: "40vw"}}></div>
+              </div>
+              <div className="legend-box">
+              </div>
+            </div>
+
             <ExampleModal />
             
             </FullpageSection>

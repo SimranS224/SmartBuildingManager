@@ -25,9 +25,22 @@
 
 .rectangle-stage {
   border-style: solid;
-  border-color: white;
+  border-color: black;
   border-width: 1px;
+  height: 70vh;
+  width: 60vw;
+  display: flex;
+  /* flex-direction: row; */
+  /* justify-content: center; */
+  /* padding-left: 100px; */
+}
 
+.legend-box {
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  height: 70vh;
+  width: 40vw;
 }
 
 
