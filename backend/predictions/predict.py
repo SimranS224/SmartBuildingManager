@@ -64,14 +64,16 @@ for i in range(1, numberOf10Seconds):
   # print(mostRecent)
   for i in range(2,mostRecent.shape[1],2):
     if predictions[0,i-1] == 0 and mostRecent.iloc[0,i] == 0:
+      # should add a normalized
       predictions[0,i-2]=mostRecent.iloc[0,i-1]
     elif predictions[0,i-1] != 0 and mostRecent.iloc[0,i] != 0:
+      # should subtract a normalized
       predictions[0,i-2]=mostRecent.iloc[0,i-1]
     else:
       predictions[0,i-2]=0
-  nextTime = datetime.strptime(mostRecent.iloc[0]['date'],datetimeFormat) + timedelta(seconds=10)
+  nextTime = mostRecent.iloc[0]['date'] + timedelta(seconds=10)
   print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
-  x_val=x_val.append(pd.DataFrame([[nextTime.strftime(datetimeFormat)]+predictions[0].tolist()], columns=x_val.columns),ignore_index=True)
+  x_val=x_val.append(pd.DataFrame([[nextTime]+predictions[0].tolist()], columns=x_val.columns),ignore_index=True)
   print(x_val)
 
 date = x_val['date'].min
