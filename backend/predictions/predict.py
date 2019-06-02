@@ -29,7 +29,7 @@ def transformInput(dataFrame):
 def inverseTransformInput(inputSeries):
   date=inputSeries[0]
   values = []
-  for i in range(1, inputSeries.size):
+  for i in range(1, inputSeries.size, 2):
     values.append([date,i/2,inputSeries[i],inputSeries[i+1]])
   return pd.DataFrame(values,columns=['date','roomId','secondsSinceLastEmpty','numberOfPeople'])
 
