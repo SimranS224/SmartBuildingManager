@@ -41,10 +41,11 @@ model = load_model('regressor.h5')
 offset = model.input_shape[2] / 2
 offset *= model.input_shape[1]
 
-db = sqlalchemy.create_engine("mysql+pymysql://%s:%s@35.243.145.54/%s" %(DB_USER,DB_PASS,DB_NAME))
-connection = db.session
+#db = sqlalchemy.create_engine("mysql+pymysql://%s:%s@35.243.145.54/%s" %(DB_USER,DB_PASS,DB_NAME))
+#connection = db.connect()
+db = MySQLdb.connect(host="35.243.145.54", db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
+connection = db.cursor()
 
-#db = MySQLdb.connect(unix_socket='/cloudsql/' + INSTANCE_NAME, db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
 x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM PopulationTimeseries ORDER BY date DESC LIMIT %i' %(offset), db)
 x_val.columns=["date", "roomId", "timeDiff", "numberOfPeople"]
 x_val.sort_values(["date", "roomId"],inplace=True)
@@ -82,6 +83,6 @@ connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(dat
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 x_val = x_val.apply(inverseTransformInput,axis=1)
 print(x_val)
-db.session.flush()
+connection.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
-db.session.flush()
+connection.commit()
