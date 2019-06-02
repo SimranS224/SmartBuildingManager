@@ -50,7 +50,7 @@ x_val.columns=["date", "roomId", "timeDiff", "numberOfPeople"]
 x_val.sort_values(["date", "roomId"])
 print(x_val)
 x_val = x_val.groupby("date").apply(transformInput)
-
+print(x_val)
 scaler = joblib.load(scaler_filename)
 x_val[x_val.columns] = scaler.transform(x_val)
 print(x_val)
