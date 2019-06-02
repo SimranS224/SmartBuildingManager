@@ -10,6 +10,7 @@ import Rectangle from './components/Recangle';
 import TransformerComponent from './components/TransformerComponent';
 import Fullpage, { FullPageSections, FullpageSection } from '@ap.cx/react-fullpage'
 import { Stage, Layer, Rect, Transformer } from 'react-konva';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 
 
 // class Rectangle extends React.Component {
@@ -174,9 +175,33 @@ class App extends Component {
           name: 'rect2'
         }
       ],
-      selectedShapeName: ''
+      selectedShapeName: '',
+      temp_colors: {
+        10: ["#00D4FF", "#00D4AA"],
+        11: ["#00E4FF", "#00D4FF"],
+        12: ["#00FFF4", "#00FFF4"],
+        13: ["#00FFD0", "#00FFD0"],
+        14: ["#00FFA8", "#00FFD0"],
+        15: ["#00FFD0", "#00FFA8"],
+        16: ["#00FF5C", "#00FFd0"],
+        17: ["#00FF36", "#00FF5C"],
+        18: ["#00FF24", "#00FF36"],
+        19: ["#00FF10", "#00FF24"],
+        20: ["#17FF00", "#00FF10"],
+        21: ["#3EFF00", "#17FF00"],
+        22: ["#65FF00", "#3EFF00"],
+        23: ["#8AFF00", "#65FF00"],
+        24: ["#B0FF00", "#8AFF00"],
+        25: ["#D7FF00", "#B0FF00"],
+        26: ["#FDFF00", "#D7FF00"],
+        27: ["#FFFA00", "#FDFF00"],
+        28: ["#FFF800", "#FFFA00"],
+        29: ["#FFF000", "#FFF800"],
+        30: ["#FFE600", "#FFF000"],
+      }
     }
 
+    // console.log(this.state.temp_colors);
     console.log(window.innerWidth);
 
     this.state.roomDimensions.map((room, i) => {
@@ -215,30 +240,7 @@ class App extends Component {
 
   
   temperatureToGradient(temperature){
-      const map = {
-        10: ["#00D4FF", "#00D4AA"],
-        11: ["#00E4FF", "#00D4FF"],
-        12: ["#00FFF4", "#00FFF4"],
-        13: ["#00FFD0", "#00FFD0"],
-        14: ["#00FFA8", "#00FFD0"],
-        15: ["#00FFD0", "#00FFA8"],
-        16: ["#00FF5C", "#00FFd0"],
-        17: ["#00FF36", "#00FF5C"],
-        18: ["#00FF24", "#00FF36"],
-        19: ["#00FF10", "#00FF24"],
-        20: ["#17FF00", "#00FF10"],
-        21: ["#3EFF00", "#17FF00"],
-        22: ["#65FF00", "#3EFF00"],
-        23: ["#8AFF00", "#65FF00"],
-        24: ["#B0FF00", "#8AFF00"],
-        25: ["#D7FF00", "#B0FF00"],
-        26: ["#FDFF00", "#D7FF00"],
-        27: ["#FFFA00", "#FDFF00"],
-        28: ["#FFF800", "#FFFA00"],
-        29: ["#FFF000", "#FFF800"],
-        30: ["#FFE600", "#FFF000"],
-      }
-
+      const map = this.state.temp_colors;
       return map[temperature][0];
   }
 
@@ -272,8 +274,30 @@ class App extends Component {
     this.setState({ show: true });
   }
 
+  createListofColors(){
+    console.log(this.state.temp_colors[0]);
+    // console.log(Object.keys(all_temps));
+    var arr = [];
+
+    for (var key in this.state.temp_colors) {
+      arr.push([key,this.state.temp_colors[key][0]]);
+    }
+    // console.log(arr);
+    // let all_temps = Object.values(this.state.temp_colors).forEach(function (actual_key,value) {
+    //   <li color="blue" key={actual_key}>{value}</li>
+    //   console.log('key: ', value);  
+    //   console.log('items: ', actual_key[0]);  
+    //   // console.log("true value", this.state.temp_colors[value]);
+    // });
+    // console.log(all_temps);
+    return arr;
+  }
+
   render(){
+    const {all_temps} = this.state;  // Essentially does: const vals = this.state.vals;
+
     return (
+      
       <div className="App">
         <header className="App-header">
         <Fullpage>
@@ -285,6 +309,7 @@ class App extends Component {
                 height: '40vh',
                 padding: '1em',
               }}>1
+              
               <Typist>
               <Typist.Delay ms={1000} />
                   <hr></hr>
@@ -298,11 +323,13 @@ class App extends Component {
                 padding: '1em',
               }}>2
             <p style={{color: 'black'}}>Room - {this.state.selectedShapeName}</p>
+            
             <Stage
               width={window.innerWidth * 0.7}
               height={window.innerHeight * 0.4}
               onMouseDown={this.handleStageMouseDown}
             >
+              
             <Layer>
               {this.state.roomDimensions.map((rect, i) => (
                 <Rectangle key={i} {...rect} />
@@ -311,18 +338,23 @@ class App extends Component {
                 selectedShapeName={this.state.selectedShapeName}
               />
             </Layer>
+            
             </Stage>
+            <ul>
+                {this.createListofColors().map(item => (
+                  <ul style={{color: item[1]}} key={item}>{item}</ul>
+                ))}
+              </ul>
             <ExampleModal />
+            
             </FullpageSection>
             <FullpageSection style={{
                 height: '50vh',
-                backgroundColor: 'white',
                 padding: '1em',
               }}>3
-              <>
-
-              </>
-
+             {console.log(this.createListofColors())};
+              
+                
             </FullpageSection>
 
           </FullPageSections>
