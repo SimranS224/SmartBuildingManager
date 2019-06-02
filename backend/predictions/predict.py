@@ -6,20 +6,6 @@ import MySQLdb
 import sqlalchemy
 import datetime
 
-db = sqlalchemy.create_engine(
-    # Equivalent URL:
-    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
-    sqlalchemy.engine.url.URL(
-        drivername='mysql+pymysql',
-        username=DB_USER,
-        password=DB_PASS,
-        database=DB_NAME,
-        query={
-            'unix_socket': '/cloudsql/{}'.format(INSTANCE_NAME)
-        }
-    ),
-)
-
 numberOf10Seconds = 720
 
 INSTANCE_NAME = 'tsflo-242417:us-east1:predict-db'
@@ -55,7 +41,21 @@ model = load_model('regressor.h5')
 offset = model.input_shape[2] / 2
 offset *= model.input_shape[1]
 
-db = MySQLdb.connect(unix_socket='/cloudsql/' + INSTANCE_NAME, db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
+db = sqlalchemy.create_engine(
+    # Equivalent URL:
+    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
+    sqlalchemy.engine.url.URL(
+        drivername='mysql+pymysql',
+        username=DB_USER,
+        password=DB_PASS,
+        database=DB_NAME,
+        query={
+            'unix_socket': '/cloudsql/{}'.format(INSTANCE_NAME)
+        }
+    ),
+)
+
+#db = MySQLdb.connect(unix_socket='/cloudsql/' + INSTANCE_NAME, db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
 x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM PopulationTimeseries ORDER BY date DESC LIMIT %i' %(offset), db)
 x_val = x_val.groupby("date").apply(transformInput)
 
