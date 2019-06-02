@@ -69,7 +69,7 @@ for i in range(1, numberOf10Seconds):
       predictions[0,i-2]=0
   nextTime = mostRecent.iloc[0]['date'] + timedelta(seconds=10)
   print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
-  x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True,inplace=True)
+  x_val=x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True)
 
 date = x_val['date'].min
 print(date)
