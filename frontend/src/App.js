@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form'; 
 import ResizableRect from 'react-resizable-rotatable-draggable'
 // import Particles from "./particles";
 import Typist from 'react-typist';
@@ -76,6 +77,7 @@ class ExampleModal extends React.Component {
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
       show: false,
@@ -90,6 +92,19 @@ class ExampleModal extends React.Component {
     this.setState({ show: true });
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    var form = event.target;
+    console.log(form.elements.room_name.value);
+
+    var newRoomName = form.elements.room_name.value;
+
+    // Add room to props
+    this.props.handleFormSubmit(newRoomName, 10);
+
+    this.setState({show: false});
+  }
+
   render() {
     return (
       <>
@@ -99,16 +114,23 @@ class ExampleModal extends React.Component {
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Create a Room</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Body>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Group>
+                <Form.Label>Room name</Form.Label>
+                <Form.Control name="room_name" type="input"/>
+              </Form.Group>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" type="submit">
+                Save Changes
+              </Button>
+              </Form>
+          </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={this.handleClose}>
-              Save Changes
-            </Button>
           </Modal.Footer>
         </Modal>
       </>
@@ -122,7 +144,8 @@ class App extends Component {
     super(props);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+
     this.state = {
       ...props,
       roomDimensions: [
@@ -238,6 +261,32 @@ class App extends Component {
     }
   };
 
+  handleFormSubmit(newRoom, temperature){
+    this.setState({
+      roomDimensions: [...this.state.roomDimensions,
+        {
+          x: 0, 
+          y: 100,
+          width: 500,
+          height: 50,
+          position: [0, 100],
+          temperature: temperature,
+          name: newRoom
+        }
+      ]
+    });
+
+    setTimeout(() => {
+      this.state.roomDimensions.map((room, i) => {
+        this.state.roomDimensions[i] = {...room, fill: this.temperatureToGradient(room.temperature)}
+      });
+    }, 500);
+
+    // this.setState({
+    //   roomDimensions: [...this.state.roomDimensions]
+    // });
+
+  }
   
   temperatureToGradient(temperature){
       const map = this.state.temp_colors;
@@ -295,6 +344,7 @@ class App extends Component {
 
   render(){
     const {all_temps} = this.state;  // Essentially does: const vals = this.state.vals;
+    console.log(this.state.roomDimensions);
 
     return (
       
@@ -355,8 +405,7 @@ class App extends Component {
               </div>
             </div>
 
-            <ExampleModal />
-            
+            <ExampleModal handleFormSubmit={this.handleFormSubmit}/>
             </FullpageSection>
             <FullpageSection style={{
                 height: '50vh',
