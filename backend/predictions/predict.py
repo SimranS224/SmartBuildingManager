@@ -47,8 +47,8 @@ db = sqlalchemy.create_engine("mysql+pymysql://%s:%s@35.243.145.54/%s" %(DB_USER
 #db = MySQLdb.connect(unix_socket='/cloudsql/' + INSTANCE_NAME, db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
 x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM PopulationTimeseries ORDER BY date DESC LIMIT %i' %(offset), db)
 x_val.columns=["date", "roomId", "timeDiff", "numberOfPeople"]
-x_val.sort_values(["date", "roomId"])
-print(x_val)
+x_val.sort_values(["date", "roomId"],inplace=True)
+# print(x_val)
 x_val = x_val.groupby("date").apply(transformInput)
 print(x_val)
 scaler = joblib.load(scaler_filename)
@@ -67,7 +67,7 @@ for i in range(1, numberOf10Seconds):
       predictions[0,i-1]=mostRecent.iloc[0,i-1]
     else:
       predictions[0,i-1]=0
-  nextTime = mostRecent.iloc[0].name + timedelta(seconds=10)
+  nextTime = mostRecent.iloc[0].name[0] + timedelta(seconds=10)
   print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
   x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True)
 
