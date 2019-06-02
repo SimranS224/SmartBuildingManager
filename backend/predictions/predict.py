@@ -82,5 +82,6 @@ connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(dat
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 x_val = x_val.apply(inverseTransformInput,axis=1)
 print(x_val)
-
+connection.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
+connection.commit()
