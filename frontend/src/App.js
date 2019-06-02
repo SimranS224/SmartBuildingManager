@@ -13,7 +13,8 @@ import Fullpage, { FullPageSections, FullpageSection } from '@ap.cx/react-fullpa
 import { Stage, Layer, Rect, Transformer } from 'react-konva';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import Buttonmui from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 // class Rectangle extends React.Component {
 //   render() {
@@ -98,10 +99,19 @@ class ExampleModal extends React.Component {
     var form = event.target;
     console.log(form.elements.room_name.value);
 
-    var newRoomName = form.elements.room_name.value;
+    if (form.elements.room_name){
+      var newRoomName = form.elements.room_name.value;
+    }
+    var newRoomTemperature = form.elements.room_temperature.value;
 
     // Add room to props
-    this.props.handleFormSubmit(newRoomName, 10);
+    if (!form.elements.room_name){
+      this.props.handleFormSubmit(newRoomName, newRoomTemperature);
+
+    } else {
+      this.props.handleFormSubmit(this.props.previousName, newRoomTemperature);
+
+    }
 
     this.setState({show: false});
   }
@@ -110,18 +120,22 @@ class ExampleModal extends React.Component {
     return (
       <>
         <Button variant="primary" onClick={this.handleShow}>
-          Create a Room
+          {this.props.buttonText}
         </Button>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Create a Room</Modal.Title>
+            <Modal.Title>{this.props.buttonText}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group>
                 <Form.Label >Room name</Form.Label>
                 <Form.Control name="room_name" type="input"/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Temperature</Form.Label>
+                <Form.Control name="room_temperature" type="input"/>
               </Form.Group>
               <Button variant="secondary" onClick={this.handleClose}>
                 Close
@@ -175,6 +189,7 @@ class App extends Component {
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.editFormSubmit = this.editFormSubmit.bind(this);
 
     this.state = {
       ...props,
@@ -270,7 +285,8 @@ class App extends Component {
         28: ["#FFF800", "#FFFA00"],
         29: ["#FFF000", "#FFF800"],
         30: ["#FFE600", "#FFF000"],
-      }
+      },
+      update: false,
     }
 
     // console.log(this.state.temp_colors);
@@ -395,7 +411,65 @@ class App extends Component {
     return arr;
   }
 
+  editFormSubmit(roomName, temperature){
+    this.setState({
+      // roomDimensions: [...this.state.roomDimensions],
+      update: !this.state.update,
+    });
+
+    setTimeout(() => {
+      this.state.roomDimensions.map((room, i) => {
+        if (room.name === this.state.selectedShapeName && roomName){
+          this.state.roomDimensions[i] = {...room, fill: this.temperatureToGradient(temperature), temperature: temperature, name: roomName}
+        } else if (room.name === this.state.selectedShapeName) {
+          this.state.roomDimensions[i] = {...room, fill:this.temperatureToGradient(temperature), temperature: temperature}
+        }
+      });
+    }, 500);
+
+    this.setState({
+      roomDimensions: [...this.state.roomDimensions]
+    });
+
+  }
   
+
+  updateTemperature = () => {
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var seconds = date.getSeconds();
+
+    console.log(year);
+    console.log(month);
+    console.log(day);
+    console.log(hour);
+    console.log(minute);
+    console.log(seconds);
+
+
+    console.log(date);
+    // axios.get(`https://tsflo-242417.appspot.com/predict/getPopulation/${this.year}-${this.month}-${this.day}%20${this.hour}:${this.minute}:${this.second}`)
+    axios.get("https://tsflo-242417.appspot.com/predict/getPopulation/2019-06-04%2012:31:23", {
+      headers: {
+        withCredentials: true
+      }
+    })
+      .then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.log(error);
+      })
+    fetch("https://tsflo-242417.appspot.com/predict/getPopulation/2019-06-04%2012:31:23").then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
 
   render(){
     const {all_temps} = this.state;  // Essentially does: const vals = this.state.vals;
@@ -471,7 +545,12 @@ class App extends Component {
               </div>
             </div>
 
-            <ExampleModal handleFormSubmit={this.handleFormSubmit}/>
+            <ExampleModal handleFormSubmit={this.handleFormSubmit} buttonText="Create a Room" previousName={this.state.selectedShapeName}/>
+            {this.state.selectedShapeName && 
+              <ExampleModal handleFormSubmit={this.editFormSubmit} buttonText="Edit Room" previousName={this.state.selectedShapeName}/>
+            }
+            <Button onClick={this.updateTemperature}>Update Temperature</Button>
+
             </FullpageSection>
             <FullpageSection style={{
                 height: '50vh',
