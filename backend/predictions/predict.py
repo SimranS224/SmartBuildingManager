@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import MySQLdb
-import sqlalchemy
 
 numberOf10Seconds = 720
 
@@ -27,10 +26,12 @@ def transformInput(dataFrame):
     values += [row["numberOfPeople"],row["timeDiff"]]
   return pd.DataFrame([values],columns=columns)
 
-def inverseTransformInput(inputSeries):
+def inverseTransformInput(dataFrame):
+  inputSeries = dataFrame.iloc[0]
+  print(inputSeries)
   date=inputSeries[0]
   values = []
-  for i in range(1, inputSeries.size):
+  for i in range(1, inputSeries.size, 2):
     values.append([date,i/2,inputSeries[i],inputSeries[i+1]])
   return pd.DataFrame(values,columns=['date','roomId','secondsSinceLastEmpty','numberOfPeople'])
 
@@ -41,10 +42,11 @@ model = load_model('regressor.h5')
 offset = model.input_shape[2] / 2
 offset *= model.input_shape[1]
 
-db = sqlalchemy.create_engine("mysql+pymysql://%s:%s@35.243.145.54/%s" %(DB_USER,DB_PASS,DB_NAME))
-connection = db.connect()
+#db = sqlalchemy.create_engine("mysql+pymysql://%s:%s@35.243.145.54/%s" %(DB_USER,DB_PASS,DB_NAME))
+#connection = db.connect()
+db = MySQLdb.connect(host="35.243.145.54", db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
+connection = db.cursor()
 
-#db = MySQLdb.connect(unix_socket='/cloudsql/' + INSTANCE_NAME, db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
 x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM PopulationTimeseries ORDER BY date DESC LIMIT %i' %(offset), db)
 x_val.columns=["date", "roomId", "timeDiff", "numberOfPeople"]
 x_val.sort_values(["date", "roomId"],inplace=True)
@@ -64,22 +66,26 @@ for i in range(1, numberOf10Seconds):
   # print(mostRecent)
   for i in range(2,mostRecent.shape[1],2):
     if predictions[0,i-1] == 0 and mostRecent.iloc[0,i] == 0:
+      # should add a normalized
       predictions[0,i-2]=mostRecent.iloc[0,i-1]
     elif predictions[0,i-1] != 0 and mostRecent.iloc[0,i] != 0:
+      # should subtract a normalized
       predictions[0,i-2]=mostRecent.iloc[0,i-1]
     else:
       predictions[0,i-2]=0
   nextTime = mostRecent.iloc[0]['date'] + timedelta(seconds=10)
-  print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
-  x_val=x_val.append(pd.DataFrame([[nextTime.strftime(datetimeFormat)]+predictions[0].tolist()], columns=x_val.columns),ignore_index=True)
-  print(x_val)
+  # print([nextTime]+predictions[0].tolist())
+  x_val=x_val.append(pd.DataFrame([[nextTime]+predictions[0].tolist()], columns=x_val.columns),ignore_index=True)
 
-date = x_val['date'].min
+date = x_val['date'].min()
 print(date)
+print('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
 connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
-
-x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
-x_val = x_val.apply(inverseTransformInput,axis=1)
 print(x_val)
-
+x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
+print("hi")
+x_val = x_val.groupby(date,as_index=False).apply(inverseTransformInput)
+print(x_val)
+db.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
+db.commit()
