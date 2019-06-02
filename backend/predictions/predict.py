@@ -84,7 +84,7 @@ connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(dat
 print(x_val)
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 print("hi")
-x_val = x_val.groupby(date,as_index=False).apply(inverseTransformInput)
+x_val = x_val.groupby('date',as_index=False).apply(inverseTransformInput)
 print(x_val)
 db.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
