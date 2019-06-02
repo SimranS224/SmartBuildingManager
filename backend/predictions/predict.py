@@ -68,6 +68,7 @@ for i in range(1, numberOf10Seconds):
     else:
       predictions[0,i-1]=0
   nextTime = datetime.strptime(mostRecent[0]['date'], datetimeFormat) + timedelta(seconds=10)
+  print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
   x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True)
 
 date = x_val['date'].min
