@@ -42,7 +42,7 @@ offset = model.input_shape[2] / 2
 offset *= model.input_shape[1]
 
 db = sqlalchemy.create_engine("mysql+pymysql://%s:%s@35.243.145.54/%s" %(DB_USER,DB_PASS,DB_NAME))
-
+connection = engine.connect()
 
 #db = MySQLdb.connect(unix_socket='/cloudsql/' + INSTANCE_NAME, db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
 x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM PopulationTimeseries ORDER BY date DESC LIMIT %i' %(offset), db)
@@ -59,7 +59,7 @@ for i in range(1, numberOf10Seconds):
   temp = np.reshape(np.array(x_val.iloc[:,1:].tail(x_val.shape[0])),(1,x_val.shape[0],x_val.shape[1]-1))
   predictions = model.predict(temp)
   mostRecent = x_val.tail(1)
-  print(mostRecent)
+  # print(mostRecent)
   for i in range(2,mostRecent.shape[1],2):
     if predictions[0,i-1] == 0 and mostRecent.iloc[0,i] == 0:
       predictions[0,i-2]=mostRecent.iloc[0,i-1]
@@ -73,12 +73,10 @@ for i in range(1, numberOf10Seconds):
 
 date = x_val['date'].min
 print(date)
-cursor.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
+connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
 
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 x_val = x_val.apply(inverseTransformInput,axis=1)
 print(x_val)
 
-db.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
-db.commit()
