@@ -27,7 +27,7 @@ def transformInput(dataFrame):
   return pd.DataFrame([values],columns=columns)
 
 def inverseTransformInput(dataFrame):
-  inputSeries dataFrame.iloc[0]
+  inputSeries = dataFrame.iloc[0]
   date=inputSeries[0]
   values = []
   for i in range(1, inputSeries.size, 2):
