@@ -15,62 +15,7 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 import Buttonmui from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-
-// class Rectangle extends React.Component {
-//   render() {
-//     return (
-//       <Rect
-//         x={this.props.x}
-//         y={this.props.y}
-//         width={this.props.width}
-//         height={this.props.height}
-//         fill={this.props.fill}
-//         name={this.props.name}
-//         draggable
-//       />
-//     );
-//   }
-// }
-
-// class TransformerComponent extends React.Component {
-//   componentDidMount() {
-//     this.checkNode();
-//   }
-//   componentDidUpdate() {
-//     this.checkNode();
-//   }
-//   checkNode() {
-//     // here we need to manually attach or detach Transformer node
-//     const stage = this.transformer.getStage();
-//     const { selectedShapeName } = this.props;
-
-//     const selectedNode = stage.findOne('.' + selectedShapeName);
-//     // do nothing if selected node is already attached
-//     if (selectedNode === this.transformer.node()) {
-//       return;
-//     }
-
-//     if (selectedNode) {
-//       // attach to another node
-//       this.transformer.attachTo(selectedNode);
-//     } else {
-//       // remove transformer
-//       this.transformer.detach();
-//     }
-//     this.transformer.getLayer().batchDraw();
-//   }
-//   render() {
-//     return (
-//       <Transformer
-//         ref={node => {
-//           this.transformer = node;
-//         }}
-//       />
-//     );
-//   }
-// }
-
-
+import Calendar from "./Calendar";
 
 
 class ExampleModal extends React.Component {
@@ -571,7 +516,7 @@ class App extends Component {
                 backgroundColor: '#8bcef8',
                 height: '40vh',
                 padding: '1em',
-              }}>1
+              }}>
               
               <Typist>
               <Typist.Delay ms={1000} />
@@ -585,13 +530,13 @@ class App extends Component {
                 backgroundColor: '#002233',
                 height: '100vh',
                 padding: '1em',
-              }}>2
+              }}>
             <p style={{color: 'white'}}>Room - {this.state.selectedShapeName} | Temperature - {this.state.selectedShapeTemperature} | Future Temperature - </p>
             
             <div style={{display: 'flex', flexDirection: "row"}}>
               <div className="rectangle-stage" backgroundColor="white">
               <Stage
-              style={{backgroundColor:"#8bcef8"}}
+              style={{backgroundColor:"#white"}}
               width={window.innerWidth * 0.7}
               height={window.innerHeight * 0.4}
               onMouseDown={this.handleStageMouseDown}
@@ -619,7 +564,7 @@ class App extends Component {
                       // </Button>
                         // <StyledButton style={{color:item}}> </StyledButton>
                         <div style={{backgroundColor: `${item[1]}`, width:"20vw"}}>
-                        <ul style={{color: "black", fontSize: "18px", backgroundColor: `${item[1]}`, width:"0vw"}} key={item}> {item[0]}</ul>
+                        <ul style={{color: "white", fontSize: "18px", backgroundColor: `${item[1]}`, width:"0vw"}} key={item}> {item[0]}</ul>
                         </div>
                       ))}
                     </ul>
@@ -641,7 +586,11 @@ class App extends Component {
                 height: '50vh',
                 backgroundColor: '#8bcef8',
                 padding: '1em',
-              }}>3
+              }}>
+                <h1>Schedule</h1>
+                <main>
+              <Calendar />
+            </main>
              {/* {console.log(this.createListofColors())}; */}
               
                 
