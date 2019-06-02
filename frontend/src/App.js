@@ -298,20 +298,29 @@ class App extends Component {
                 padding: '1em',
               }}>2
             <p style={{color: 'black'}}>Room - {this.state.selectedShapeName}</p>
-            <Stage
-              width={window.innerWidth * 0.7}
-              height={window.innerHeight * 0.4}
-              onMouseDown={this.handleStageMouseDown}
-            >
-            <Layer>
-              {this.state.roomDimensions.map((rect, i) => (
-                <Rectangle key={i} {...rect} />
-              ))}
-              <TransformerComponent
-                selectedShapeName={this.state.selectedShapeName}
-              />
-            </Layer>
-            </Stage>
+            <div style={{display: 'flex', flexDirection: "row"}}>
+              <div className="rectangle-stage">
+                <Stage
+                  width={window.innerWidth * 0.4}
+                  height={window.innerHeight * 0.4}
+                  onMouseDown={this.handleStageMouseDown}
+                >
+                <Layer>
+                  {this.state.roomDimensions.map((rect, i) => (
+                    <Rectangle key={i} {...rect} />
+                  ))}
+                  <TransformerComponent
+                    selectedShapeName={this.state.selectedShapeName}
+                  />
+                </Layer>
+                </Stage>
+                {/* <p style={{color: 'black'}}>Hello world</p> */}
+                <div style={{height: "40vh", width: "40vw"}}></div>
+              </div>
+              <div className="legend-box">
+              </div>
+            </div>
+
             <ExampleModal />
             </FullpageSection>
             <FullpageSection style={{
