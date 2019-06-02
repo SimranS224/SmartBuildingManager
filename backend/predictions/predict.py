@@ -31,7 +31,7 @@ def inverseTransformInput(inputSeries):
   values = []
   for i in range(1, inputSeries.size, 2):
     values.append([date,i/2,inputSeries[i],inputSeries[i+1]])
-  return pd.DataFrame(values,columns=['date','roomId','secondsSinceLastEmpty','numberOfPeople'])
+  return pd.Series(values,index=['date','roomId','secondsSinceLastEmpty','numberOfPeople'])
 
 model = load_model('regressor.h5')
 
