@@ -60,7 +60,7 @@ for i in range(1, numberOf10Seconds):
   predictions = model.predict(temp)
   mostRecent = x_val.tail(1)
   print(mostRecent)
-  for i in range(1,mostRecent.shape[1],2):
+  for i in range(2,mostRecent.shape[1],2):
     if predictions[0,i-1] == 0 and mostRecent.iloc[0,i] == 0:
       predictions[0,i-2]=mostRecent.iloc[0,i-1]
     elif predictions[0,i-1] != 0 and mostRecent.iloc[0,i] != 0:
