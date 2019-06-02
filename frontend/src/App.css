@@ -23,6 +23,51 @@
   color: #61dafb;
 }
 
+.rectangle-stage {
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  height: 40vh;
+  width: 70vw;
+  display: flex;
+  /* flex-direction: row; */
+  /* justify-content: center; */
+  /* padding-left: 100px; */
+}
+
+.legend-box {
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  height: 79vh;
+  width: 40vw;
+  /* background-color: black; */
+}
+
+
+.letter-holder { display:inline-block; position:relative; font-size:100px; }
+.letter { display: block; font-family:Helvetica, sans-serif; opacity:0.25; }
+.letter-strokes { display: block; position: absolute; left: 0; top: 15%; bottom: 0; width: 100%; }
+.letter-strokes--h { left: 5%; }
+.letter-stroke { display: block; position: absolute; }
+.letter-stroke__svg { width: 100%; height: auto; display: block; fill: none; }
+.letter-stroke .letter-stroke__svg-path { stroke: lightblue; stroke-width: 50; stroke-miterlimit: 10; }
+
+.h-left-stroke { left: 0; top: 0; width: 34.7%; }
+.h-middle-stroke { left: 26%; top: 22%; width: 38.6%; }
+.h-right-stroke { left: 56%; top: 0; width: 35.7%; }
+
+.e-left-stroke { left: 0; top: -1%; width: 42.5%; }
+.e-top-stroke { left: 32.5%; top: -1%; width: 53.7%; }
+.e-middle-stroke { left: 30.5%; top: 22%; width: 50.7%; }
+.e-bottom-stroke { left: 31.5%; top: 44.5%; width: 54.6%; }
+
+.y-left-stroke { left: -5%; top: 0; width: 74%; }
+.y-right-stroke { left: 29%; top: 0; width: 82.1%; }
+.y-bottom-stroke { left: 29%; top: 41%; width: 39.9%; }
+
+.modal{ display:block; }
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
