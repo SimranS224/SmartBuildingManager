@@ -28,6 +28,7 @@ def transformInput(dataFrame):
 
 def inverseTransformInput(dataFrame):
   inputSeries = dataFrame.iloc[0]
+  print(inputSeries)
   date=inputSeries[0]
   values = []
   for i in range(1, inputSeries.size, 2):
