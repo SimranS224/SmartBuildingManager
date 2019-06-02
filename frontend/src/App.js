@@ -236,7 +236,8 @@ class App extends Component {
     // clicked on stage - cler selection
     if (e.target === e.target.getStage()) {
       this.setState({
-        selectedShapeName: ''
+        selectedShapeName: '',
+        temperature: null
       });
       return;
     }
@@ -252,11 +253,13 @@ class App extends Component {
     const rect = this.state.roomDimensions.find(r => r.name === name);
     if (rect) {
       this.setState({
-        selectedShapeName: name
+        selectedShapeName: name,
+        selectedShapeTemperature: rect.temperature
       });
     } else {
       this.setState({
-        selectedShapeName: ''
+        selectedShapeName: '',
+        temperature: null
       });
     }
   };
@@ -368,33 +371,12 @@ class App extends Component {
             
             </FullpageSection>
             <FullpageSection style={{
-                // backgroundColor: '#002233',
+                backgroundColor: '#002233',
                 height: '100vh',
                 padding: '1em',
               }}>2
-            <p style={{color: 'black'}}>Room - {this.state.selectedShapeName}</p>
+            <p style={{color: 'white'}}>Room - {this.state.selectedShapeName} | Temperature - {this.state.selectedShapeTemperature} | Future Temperature - </p>
             
-            {/* <Stage
-              width={window.innerWidth * 0.7}
-              height={window.innerHeight * 0.4}
-              onMouseDown={this.handleStageMouseDown}
-            >
-              
-            <Layer>
-              {this.state.roomDimensions.map((rect, i) => (
-                <Rectangle key={i} {...rect} />
-              ))}
-              <TransformerComponent
-                selectedShapeName={this.state.selectedShapeName}
-              />
-            </Layer>
-            
-            </Stage> */}
-            {/* <ul>
-                {this.createListofColors().map(item => (
-                  <ul style={{color: item[1]}} key={item}>{item}</ul>
-                ))}
-              </ul> */}
             <div style={{display: 'flex', flexDirection: "row"}}>
               <div className="rectangle-stage">
               <Stage
