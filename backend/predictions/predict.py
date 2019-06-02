@@ -49,7 +49,7 @@ x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM
 x_val.columns=["date", "roomId", "timeDiff", "numberOfPeople"]
 x_val.sort_values(["date", "roomId"],inplace=True)
 # print(x_val)
-x_val = x_val.groupby("date").apply(transformInput)
+x_val = x_val.groupby("date", as_index=False).apply(transformInput)
 print(x_val)
 scaler = joblib.load(scaler_filename)
 x_val[x_val.columns] = scaler.transform(x_val)
@@ -67,7 +67,7 @@ for i in range(1, numberOf10Seconds):
       predictions[0,i-1]=mostRecent.iloc[0,i-1]
     else:
       predictions[0,i-1]=0
-  nextTime = mostRecent.iloc[0].name[0] + timedelta(seconds=10)
+  nextTime = mostRecent.iloc[0]['date'] + timedelta(seconds=10)
   print([nextTime.strftime(datetimeFormat)]+predictions[0].tolist())
   x_val.append([nextTime.strftime(datetimeFormat)]+predictions[0].tolist(),ignore_index=True)
 
