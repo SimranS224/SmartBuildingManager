@@ -77,7 +77,7 @@ for i in range(1, numberOf10Seconds):
 
 date = x_val['date'].min
 print(date)
-print('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
+print('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date.strftime(datetimeFormat)))
 connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(date))
 print("finished")
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
