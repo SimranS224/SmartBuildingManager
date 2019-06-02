@@ -72,7 +72,7 @@ for i in range(1, numberOf10Seconds):
     else:
       predictions[0,i-2]=0
   nextTime = mostRecent.iloc[0]['date'] + timedelta(seconds=10)
-  print([nextTime]+predictions[0].tolist())
+  # print([nextTime]+predictions[0].tolist())
   x_val=x_val.append(pd.DataFrame([[nextTime]+predictions[0].tolist()], columns=x_val.columns),ignore_index=True)
 
 date = x_val['date'].min
@@ -82,6 +82,6 @@ connection.execute('DELETE FROM PopulationPrediction WHERE date >= \'%s\'' %(dat
 x_val[x_val.columns[1:]] = scaler.inverse_transform(x_val.iloc[:,1:])
 x_val = x_val.apply(inverseTransformInput,axis=1)
 print(x_val)
-connection.commit()
+db.commit()
 x_val.to_sql('PopulationPrediction',db,if_exists='append')
-connection.commit()
+db.commit()
