@@ -59,6 +59,7 @@ for i in range(1, numberOf10Seconds):
   temp = np.reshape(np.array(x_val.tail(x_val.shape[0])),(1,x_val.shape[0],x_val.shape[1]))
   predictions = model.predict(temp)
   mostRecent = x_val.tail(1)
+  print(mostRecent)
   for i in range(1,mostRecent.shape[1],2):
     if predictions[0,i] == 0 and mostRecent.iloc[0,i] == 0:
       predictions[0,i-1]=mostRecent.iloc[0,i-1]
