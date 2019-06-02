@@ -27,7 +27,7 @@
   border-style: solid;
   border-color: black;
   border-width: 1px;
-  height: 70vh;
+  height: 79vh;
   width: 60vw;
   display: flex;
   /* flex-direction: row; */
@@ -39,7 +39,7 @@
   border-style: solid;
   border-color: black;
   border-width: 1px;
-  height: 70vh;
+  height: 79vh;
   width: 40vw;
   /* background-color: black; */
 }

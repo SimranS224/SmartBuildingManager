@@ -119,7 +119,7 @@ class ExampleModal extends React.Component {
           <Modal.Body>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group>
-                <Form.Label>Room name</Form.Label>
+                <Form.Label >Room name</Form.Label>
                 <Form.Control name="room_name" type="input"/>
               </Form.Group>
               <Button variant="secondary" onClick={this.handleClose}>
@@ -179,6 +179,24 @@ class App extends Component {
           temperature: 25,
           name: "hallway1"
         },
+        {
+          x: 0,
+          y: 150,
+          width: 1030,
+          height: 200,
+          postion: [0, 200],
+          temperature: 30,
+          name: "diningHall"
+        },
+        {
+          x: 500,
+          y: 0,
+          width: 530,
+          height: 150,
+          position: [0, 0],
+          temperature: 17,
+          name: "Washroom"
+        }
       ],
       rectangles: [
         {
@@ -358,7 +376,7 @@ class App extends Component {
           <FullPageSections>
 
             <FullpageSection style={{
-                backgroundColor: 'black',
+                backgroundColor: '#8bcef8',
                 height: '40vh',
                 padding: '1em',
               }}>1
@@ -367,6 +385,7 @@ class App extends Component {
               <Typist.Delay ms={1000} />
                   <hr></hr>
                   <h1 className="desc" fontSize="1000">Pi-sensor</h1>
+                  <h1 className="desc" fontSize="1000">A machine learning solution for energy consumption in large buildings. </h1>
               </Typist>
             
             </FullpageSection>
@@ -413,6 +432,7 @@ class App extends Component {
             </FullpageSection>
             <FullpageSection style={{
                 height: '50vh',
+                backgroundColor: '#8bcef8',
                 padding: '1em',
               }}>3
              {console.log(this.createListofColors())};
