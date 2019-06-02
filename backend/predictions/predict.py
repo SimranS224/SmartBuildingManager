@@ -46,6 +46,7 @@ db = sqlalchemy.create_engine("mysql+pymysql://%s:%s@35.243.145.54/%s" %(DB_USER
 
 #db = MySQLdb.connect(unix_socket='/cloudsql/' + INSTANCE_NAME, db=DB_NAME, user=DB_USER, passwd=DB_PASS, charset='utf8')
 x_val= pd.read_sql('SELECT date,roomId,secondsSinceLastEmpty,numberOfPeople FROM PopulationTimeseries ORDER BY date DESC LIMIT %i' %(offset), db)
+print(x_val)
 x_val = x_val.groupby("date").apply(transformInput)
 
 scaler = joblib.load(scaler_filename)
