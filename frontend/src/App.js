@@ -368,13 +368,36 @@ class App extends Component {
             
             </FullpageSection>
             <FullpageSection style={{
-                backgroundColor: 'white',
+                // backgroundColor: '#002233',
                 height: '100vh',
                 padding: '1em',
               }}>2
             <p style={{color: 'black'}}>Room - {this.state.selectedShapeName}</p>
             
-            <Stage
+            {/* <Stage
+              width={window.innerWidth * 0.7}
+              height={window.innerHeight * 0.4}
+              onMouseDown={this.handleStageMouseDown}
+            >
+              
+            <Layer>
+              {this.state.roomDimensions.map((rect, i) => (
+                <Rectangle key={i} {...rect} />
+              ))}
+              <TransformerComponent
+                selectedShapeName={this.state.selectedShapeName}
+              />
+            </Layer>
+            
+            </Stage> */}
+            {/* <ul>
+                {this.createListofColors().map(item => (
+                  <ul style={{color: item[1]}} key={item}>{item}</ul>
+                ))}
+              </ul> */}
+            <div style={{display: 'flex', flexDirection: "row"}}>
+              <div className="rectangle-stage">
+              <Stage
               width={window.innerWidth * 0.7}
               height={window.innerHeight * 0.4}
               onMouseDown={this.handleStageMouseDown}
@@ -390,16 +413,15 @@ class App extends Component {
             </Layer>
             
             </Stage>
-            <ul>
-                {this.createListofColors().map(item => (
-                  <ul style={{color: item[1]}} key={item}>{item}</ul>
-                ))}
-              </ul>
-            <div style={{display: 'flex', flexDirection: "row"}}>
-              <div className="rectangle-stage">
                
                 {/* <p style={{color: 'black'}}>Hello world</p> */}
-                <div style={{height: "40vh", width: "40vw"}}></div>
+                <div style={{height: "40vh", width: "40vw"}}>
+                    <ul>
+                      {this.createListofColors().map(item => (
+                        <ul style={{color: item[1], fontSize: "18px"}} key={item}>{item}</ul>
+                      ))}
+                    </ul>
+                </div>
               </div>
               <div className="legend-box">
               </div>
